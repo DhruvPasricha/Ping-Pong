@@ -7,13 +7,13 @@ body {
 #container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 .bat {
-    height: 55vh;
+    height: 45vh;
     width: 2vw;
     background-color: #7D0633;
+    position: relative;
 }
 
 #ball {

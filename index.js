@@ -1,3 +1,7 @@
+const getRectangularCoordinates = (element) => {
+    return element.getBoundingClientRect();
+};
+
 const handleBallMovement = () => {
     const TOP_BOUNDARY = 0;
     const BOTTOM_BOUNDARY = 94;
@@ -12,10 +16,6 @@ const handleBallMovement = () => {
         yDelta = -1;
 
     const updateNextPoint = () => {
-        const getRectangularCoordinates = (element) => {
-            return element.getBoundingClientRect();
-        };
-
         const isOverlapping = (element1, element2) => {
             element1 = getRectangularCoordinates(element1);
             element2 = getRectangularCoordinates(element2);
@@ -59,4 +59,46 @@ const handleBallMovement = () => {
     }, 20);
 };
 
+const handleBatsMovement = () => {
+    const bats = document.querySelectorAll(".bat");
+    const batsPosition = [0, 0];
+    const delta = 2;
+    const TOP_BOUNDARY = 0;
+    const BOTTOM_BOUNDARY = 52;
+
+    const moveDown = (id) => {
+        batsPosition[id] = Math.min(BOTTOM_BOUNDARY, batsPosition[id] + delta);
+        bats[id].style.top = `${batsPosition[id]}vh`;
+    };
+
+    const moveUp = (id) => {
+        batsPosition[id] = Math.max(TOP_BOUNDARY, batsPosition[id] - delta);
+        bats[id].style.top = `${batsPosition[id]}vh`;
+    };
+
+    document.body.addEventListener("keydown", (e) => {
+        switch (e.key) {
+            case "ArrowDown":
+                moveDown(1);
+                break;
+            case "ArrowUp":
+                moveUp(1);
+                break;
+            case "w":
+                moveUp(0);
+                break;
+            case "s":
+                moveDown(0);
+                break;
+            case "W":
+                moveUp(0);
+                break;
+            case "S":
+                moveDown(0);
+                break;
+        }
+    });
+};
+
 handleBallMovement();
+handleBatsMovement();
