@@ -2,6 +2,17 @@ const getRectangularCoordinates = (element) => {
     return element.getBoundingClientRect();
 };
 
+const isOverlapping = (element1, element2) => {
+    element1 = getRectangularCoordinates(element1);
+    element2 = getRectangularCoordinates(element2);
+    return (
+        Math.min(element1.right, element2.right) >
+            Math.max(element1.left, element2.left) &&
+        Math.min(element1.bottom, element2.bottom) >
+            Math.max(element1.top, element2.top)
+    );
+};
+
 const handleBallMovement = () => {
     const TOP_BOUNDARY = 0;
     const BOTTOM_BOUNDARY = 94;
@@ -16,32 +27,18 @@ const handleBallMovement = () => {
         yDelta = -1;
 
     const updateNextPoint = () => {
-        const isOverlapping = (element1, element2) => {
-            element1 = getRectangularCoordinates(element1);
-            element2 = getRectangularCoordinates(element2);
-            return (
-                Math.min(element1.right, element2.right) >
-                    Math.max(element1.left, element2.left) &&
-                Math.min(element1.bottom, element2.bottom) >
-                    Math.max(element1.top, element2.top)
-            );
-        };
+        const hasGameEnded =
+            xPosition === LEFT_BOUNDARY || xPosition === RIGHT_BOUNDARY;
+        if (hasGameEnded) {
+            const winner = xPosition === LEFT_BOUNDARY ? 2 : 1;
+            alert(`Player ${winner} wins`);
+            window.location.reload();
+            return;
+        }
 
-        const hasRebounded =
-            isOverlapping(bats[0], ball) || isOverlapping(bats[1], ball);
-
-        if (hasRebounded) {
+        if (isOverlapping(bats[0], ball) || isOverlapping(bats[1], ball)) {
             xDelta *= -1;
         }
-
-        if (xPosition === LEFT_BOUNDARY) {
-            alert("Player 2 wins");
-            window.location.reload();
-        } else if (xPosition === RIGHT_BOUNDARY) {
-            alert("Player 1 wins");
-            window.location.reload();
-        }
-
         if (yPosition === TOP_BOUNDARY || yPosition === BOTTOM_BOUNDARY) {
             yDelta *= -1;
         }
@@ -55,7 +52,7 @@ const handleBallMovement = () => {
         ball.style.left = `${xPosition}vw`;
     };
 
-    ball.style.display = 'unset';
+    ball.style.display = "unset";
     setInterval(() => {
         updateNextPoint();
         setNextPoint();
@@ -106,7 +103,7 @@ const handleBatsMovement = () => {
 
 const startGameBtn = document.querySelector("#start-game-btn");
 startGameBtn.addEventListener("click", () => {
-    startGameBtn.style.display = 'none';
+    startGameBtn.style.display = "none";
     handleBallMovement();
     handleBatsMovement();
 });
