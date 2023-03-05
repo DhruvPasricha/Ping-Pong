@@ -1,0 +1,27 @@
+body {
+    height: 100vh;
+    overflow: hidden;
+    background-color: #0F4C75;
+}
+
+#container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bat {
+    height: 55vh;
+    width: 2vw;
+    background-color: #7D0633;
+}
+
+#ball {
+    border-radius: 50%;
+    background-color: #FA7D09;
+    height: 50px;
+    width: 50px;
+    position: relative;
+    align-self: baseline;
+    border: 1px black solid
+}
