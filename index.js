@@ -11,7 +11,7 @@ const handleBallMovement = () => {
     const ball = document.querySelector("#ball");
     const bats = document.querySelectorAll(".bat");
     let yPosition = 0,
-        xPosition = 0,
+        xPosition = -38,
         xDelta = 1,
         yDelta = -1;
 
@@ -35,9 +35,11 @@ const handleBallMovement = () => {
         }
 
         if (xPosition === LEFT_BOUNDARY) {
-            console.log("gone out");
+            alert("Player 2 wins");
+            window.location.reload();
         } else if (xPosition === RIGHT_BOUNDARY) {
-            console.log("gone out");
+            alert("Player 1 wins");
+            window.location.reload();
         }
 
         if (yPosition === TOP_BOUNDARY || yPosition === BOTTOM_BOUNDARY) {
@@ -53,6 +55,7 @@ const handleBallMovement = () => {
         ball.style.left = `${xPosition}vw`;
     };
 
+    ball.style.display = 'unset';
     setInterval(() => {
         updateNextPoint();
         setNextPoint();
@@ -60,19 +63,20 @@ const handleBallMovement = () => {
 };
 
 const handleBatsMovement = () => {
-    const bats = document.querySelectorAll(".bat");
-    const batsPosition = [0, 0];
-    const delta = 2;
     const TOP_BOUNDARY = 0;
     const BOTTOM_BOUNDARY = 52;
+    const DELTA = 2;
+
+    const bats = document.querySelectorAll(".bat");
+    const batsPosition = [25, 25];
 
     const moveDown = (id) => {
-        batsPosition[id] = Math.min(BOTTOM_BOUNDARY, batsPosition[id] + delta);
+        batsPosition[id] = Math.min(BOTTOM_BOUNDARY, batsPosition[id] + DELTA);
         bats[id].style.top = `${batsPosition[id]}vh`;
     };
 
     const moveUp = (id) => {
-        batsPosition[id] = Math.max(TOP_BOUNDARY, batsPosition[id] - delta);
+        batsPosition[id] = Math.max(TOP_BOUNDARY, batsPosition[id] - DELTA);
         bats[id].style.top = `${batsPosition[id]}vh`;
     };
 
@@ -100,5 +104,9 @@ const handleBatsMovement = () => {
     });
 };
 
-handleBallMovement();
-handleBatsMovement();
+const startGameBtn = document.querySelector("#start-game-btn");
+startGameBtn.addEventListener("click", () => {
+    startGameBtn.style.display = 'none';
+    handleBallMovement();
+    handleBatsMovement();
+});
